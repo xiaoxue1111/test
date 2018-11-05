@@ -1,71 +1,57 @@
 <template>
-    <div class="left-rank">
-
-        <p class="title">{{$t('weekRank')}}<i class="el-icon-question icon-question" @click="ruleDialog.visible = true"></i></p>
-    <table cellspacing="0" width="100%" class="rankTable">
-        <thead>
-          <tr class="timeRange">
-            <th colspan="4">
-              <span class="iconSpan">
-                <i class="iconfont icon-jiantou-zuo-cuxiantiao" @click="changeTime('-')" :class="{grey:(rankTableLoading)}"></i>
-              </span>
-              <span style="display: inline-block;width: 1.59rem;">{{ startDate }}-{{ endDate }}</span>
-              <span class="iconSpan">
-                <i class="iconfont icon-jiantou-zuo-cuxiantiao right" :class="{grey:(!isClick||rankTableLoading)}" @click="changeTime('+')"></i>
-              </span>
-            </th>
-          </tr>
-          <tr class="thead">
-            <th>{{$t('rankTable.thead.Rank')}}</th>
-            <th>{{$t('rankTable.thead.Bettor')}}</th>
-            <th>{{$t('rankTable.thead.TotalWager')}}</th>
-            <th>{{$t('rankTable.thead.Prize')}}</th>
-          </tr>
-        </thead>
-
-        <tbody v-if="rankTableLoading">
-          <tr>
-            <td colspan="4">{{$t('rankTable.Loading')}}</td>
-          </tr>
-        </tbody>
-        <tbody v-else>
-          <tr v-for="(item,index) of rankList" v-if="rankList && rankList.length > 0" :key="index">
-            <td v-if="item.Rank <= 3">
-              <img :src="require('../static/images/rank'+item.Rank+'.png')" alt="" style="display: table;margin: 0 auto;">
-            </td>
-            <td v-else>{{item.Rank}}</td>
-            <td>{{item.Addr | hiddenAddress}}</td>
-            <td>{{item.Val | fromSun}} {{$t('TRX')}}</td>
-            <td style="color: #5EDB9E;">{{item.Prize}} {{$t('TRX')}}</td>
-          </tr>
-
-          <tr v-if="rankList && rankList.length === 0">
-            <td colspan="4">{{$t('rankTable.NoData')}}</td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
+    <div class="rank">
+        <table border="0" cellspacing="0" cellpadding="0">
+            <caption class="title">{{$t('RankTitle')}}(19:19:08)</caption>
+            <thead>
+            <tr>
+                <th>
+                    {{$t('Order')}}
+                </th>
+                <th>
+                    {{$t('Player')}}
+                </th>
+                <th>
+                    {{$t('TotalMount')}}
+                </th>
+                <th>
+                    {{$t('Prize')}}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) of ranks">
+                    <td><img v-if="index < 3" :src="require('../assets/images/order'+(index+1)+'.png')"><span v-else>{{index+1}}</span></td>
+                    <td>{{item.player|hiddenAddress}}</td>
+                    <td>{{item.total}} TRX</td>
+                    <td>{{item.prize}} TRX</td>
+                </tr>
+            </tbody>
+        </table>
+        <div v-if="ranks.length>0" class="last">
+            <div class="cell">
+                <span>{{ranks.length}}</span>
+            </div>
+            <div class="cell">
+                {{ranks[ranks.length-1].player|hiddenAddress}}
+            </div>
+            <div class="cell">
+                {{ranks[ranks.length-1].total}} TRX
+            </div>
+            <div class="cell">
+                {{ranks[ranks.length-1].prize}} TRX
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import { getRanks } from "@/static/js/Util";
-import moment from "moment";
 export default {
   name: "Rank",
   data() {
     return {
-      ranks: [],
-      rankTableLoading: false,
-      ruleDialog: {
-        visible: false
-      },
-      isClick: false,
-      startDate: moment()
-        .add(-7, "days")
-        .format("YYYY.MM.DD"),
-      endDate: moment().format("YYYY.MM.DD"),
-      rankList: []
+      ranks: []
     };
   },
   computed: {
@@ -312,56 +298,10 @@ export default {
       });
       this.ranks = ranks;
     }
-  },
-  methods: {
-    changeTime() {}
   }
 };
 </script>
 <style scoped lang="scss">
-.left-rank {
-  width: 100%;
-  height: 6.85rem;
-  background: #4d539e;
-  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-  margin: 0.7rem 0;
-  .title {
-    text-indent: 0.2rem;
-    line-height: 0.38rem;
-    height: 0.38rem;
-    font-size: 0.17rem;
-    color: #ffffff;
-
-    .icon-question {
-      float: right;
-      line-height: 0.38rem;
-      margin-right: 0.2rem;
-    }
-  }
-  .timeRange {
-    font-size: 0.14rem;
-    color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    background: #353a7c;
-    height: 0.36rem;
-    font-family: PingFang-SC-Bold;
-    .right {
-      transform: rotate(180deg);
-      display: inline-block;
-    }
-  }
-
-  .rankTable th,
-  .rankTable tr {
-    height: 0.36rem;
-    .thead {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: normal;
-    }
-  }
-}
 .rank {
   width: 100%;
   height: 5.7rem;

@@ -19,7 +19,7 @@ contract SafeMath {
 
     function safeSub(uint256 a, uint256 b) internal pure returns (uint256) {
         _assert(b <= a);
-        return a - b;
+        return a-b;
     }
 
     function safeAdd(uint256 a, uint256 b) internal pure returns (uint256) {
@@ -141,9 +141,9 @@ contract TronBet is Ownable, SafeMath {
         emit Log(random3, seed, random);
 
         uint256 _reward = 0;
-        uint256 _wp = winPercent[_point - 1];
+        uint256 _wp = winPercent[_point-1];
         if (random < _wp) {
-            _reward = safeDiv(safeMul(amount, rewardPercent[_point - 1]), 100);
+            _reward = safeDiv(safeMul(amount, rewardPercent[_point-1]), 100);
             reward[msg.sender] = safeAdd(reward[msg.sender], _reward);
             luckPoint[msg.sender] = 0;
             luckPool[msg.sender] = 0;

@@ -232,10 +232,10 @@
                     newVal = parseFloat(newVal);
                     oldVal = parseFloat(oldVal);
                     const t = setInterval(()=>{
-                        oldVal = oldVal + ((newVal - oldVal)/5);
+                        oldVal = oldVal + ((newVal-oldVal)/5);
                         oldVal = Math.floor(oldVal*100)/100;
                         this.$refs[ref].innerHTML = oldVal;
-                        if(Math.abs(oldVal - newVal)<0.4){
+                        if(Math.abs(oldVal-newVal)<0.4){
                             clearInterval(t);
                             this.$refs[ref].innerHTML = newVal;
                         }
@@ -398,16 +398,16 @@
               left: -5px;
             }
             &:nth-child(2) {
-              left: calc(25% - .15rem);
+              left: calc(25%-.15rem);
             }
             &:nth-child(3) {
-              left: calc(50% - .15rem);
+              left: calc(50%-.15rem);
             }
             &:nth-child(4) {
-              left: calc(75% - .15rem);
+              left: calc(75%-.15rem);
             }
             &:nth-child(5) {
-              left: calc(100% - .2rem);
+              left: calc(100%-.2rem);
             }
             &:before {
               font-size: .12rem;
